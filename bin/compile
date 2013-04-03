@@ -79,7 +79,9 @@ cp -R $build/* $p
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go get ./..."
 cd $p
-go get -u -x ./... | sed -u 's/^/       /'
+ls ./
+go get ./... | sed -u 's/^/       /'
+echo "!"
 
 mkdir -p $build/bin
 go get -u -x github.com/robfig/revel
