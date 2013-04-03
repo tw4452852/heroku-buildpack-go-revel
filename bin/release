@@ -9,6 +9,6 @@ config_vars:
   GOROOT: /app/.goroot
   GOPATH: /app/.go
 default_process_types:
-  web: revel run $name \$PORT
+  web: revel run $name prod \$PORT
 EOF
 
