@@ -84,4 +84,4 @@ go get -x ./... | sed -u 's/^/       /'
 echo "-----> Running: go get -u -x revel"
 mkdir -p $build/bin
 go get -u -x github.com/robfig/revel
-go build -o $build/bin/revel github.com/robfig/revel/cmd
+go install github.com/robfig/revel/revel
