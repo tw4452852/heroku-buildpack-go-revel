@@ -6,10 +6,11 @@ set -eo pipefail
 mkdir -p "$1" "$2"
 build=$(cd "$1/" && pwd)
 cache=$(cd "$2/" && pwd)
-ver=1.2
+ver=1.4
 file=go$ver.linux-amd64.tar.gz
-url=http://go.googlecode.com/files/$file
+url=https://storage.googleapis.com/golang/$file
 buildpack=$(dirname $(dirname $0))
+
 
 # Python
 venv=$cache/venv
