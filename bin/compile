@@ -44,8 +44,10 @@ if test -d $cache/git-${git_ver}
 then
     echo "-----> Using Git ${git_ver}"
 else
+    echo -n "-----> Installing Git ${git_ver}..."
 	mkdir -p $cache/git-${git_ver}
 	git clone -v https://github.com/git/git $cache/git-${git_ver}
+	echo " done"
 fi
 cd $cache/git-${git_ver}
 make NO_TCLTK=YesPlease NO_PERL=YesPlease NO_GETTEXT=YesPlease NO_SVN_TESTS=YesPlease NO_MSGFMT=YesPlease NO_MSGFMT_EXTENDED_OPTIONS=YesPlease prefix=$HOME install
@@ -107,5 +109,4 @@ go get -x -v ./... | sed -u 's/^/       /'
 
 echo "-----> Running: go get -v -u -x revel"
 mkdir -p $build/bin
-go get -u -x -v github.com/revel/revel
-go install -x -v github.com/revel/cmd/revel
+go get -u -x -v github.com/revel/cmd/revel
