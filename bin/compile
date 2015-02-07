@@ -70,6 +70,10 @@ then
     echo -n "       Installing Bazaar..."
     pip install --use-mirrors bzr > /dev/null 2>&1
     echo " done"
+
+    echo -n "       Installing Git"
+    pip install --use-mirrors git > /dev/null 2>&1
+    echo " done"
 fi
 
 name=$(cat $build/.godir)
