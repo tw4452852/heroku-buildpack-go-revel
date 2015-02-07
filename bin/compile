@@ -64,11 +64,11 @@ then
     echo " done"
 
     echo -n "       Installing Mercurial..."
-    pip install -v --use-mirrors mercurial > /dev/null 2>&1
+    pip install --use-mirrors mercurial > /dev/null 2>&1
     echo " done"
 
-    echo -n "       Installing Git"
-    pip install -v git > /dev/null 2>&1
+    echo -n "       Installing Bazaar..."
+    pip install --use-mirrors bzr > /dev/null 2>&1
     echo " done"
 fi
 
@@ -77,13 +77,10 @@ p=$GOPATH/src/$name
 mkdir -p $p
 cp -R $build/* $p
 
-#echo "-----> Running: pip search git"
-#pip search git
-
 unset GIT_DIR # unset git dir or it will mess with goinstall
-echo "-----> Running: go version ./..."
+echo "-----> Running: go version"
 go version
-echo "-----> Running: git --version ./..."
+echo "-----> Running: git --version"
 git --version
 
 echo "-----> Running: go get -x -v ./..."
