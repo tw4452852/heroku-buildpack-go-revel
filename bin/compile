@@ -70,16 +70,15 @@ then
     echo -n "       Installing Bazaar..."
     pip install --use-mirrors bzr > /dev/null 2>&1
     echo " done"
-
-    echo -n "       Installing Git"
-    pip install --use-mirrors git > /dev/null 2>&1
-    echo " done"
 fi
 
 name=$(cat $build/.godir)
 p=$GOPATH/src/$name
 mkdir -p $p
 cp -R $build/* $p
+
+echo "-----> Running: pip search git"
+pip search git
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go version ./..."
