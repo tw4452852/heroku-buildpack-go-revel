@@ -78,11 +78,14 @@ mkdir -p $p
 cp -R $build/* $p
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
+echo "-----> Running: go version ./..."
+go version
+
 echo "-----> Running: go get -x ./..."
 cd $p
 go get -x ./... | sed -u 's/^/       /'
 
 echo "-----> Running: go get -u -x revel"
 mkdir -p $build/bin
-go get -u -x github.com/robfig/revel
-go install -x github.com/robfig/revel/revel
+go get -u -x github.com/revel/revel
+go install -x github.com/revel/cmd/revel
