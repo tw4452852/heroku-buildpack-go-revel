@@ -80,6 +80,8 @@ cp -R $build/* $p
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go version ./..."
 go version
+echo "-----> Running: git --version ./..."
+git --version
 
 echo "-----> Running: go get -x -v ./..."
 cd $p
