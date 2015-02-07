@@ -19,9 +19,9 @@ python=python2.7
 PATH=$venv/bin:$PATH
 
 # git 2.3
-PATH=/app/bin:$PATH
-hash -r
-which -a git
+git_ver=2.3.0
+git_file=v${git_ver}.tar.gz
+git_url=https://github.com/git/git/archive/${git_file}
 
 virtualenv() {
     python "$buildpack/vendor/virtualenv-1.11.6/virtualenv.py" "$@"
@@ -39,6 +39,19 @@ then
     echo >&2 " !     File bin exists and is not a directory."
     exit 1
 fi
+
+if test -d $cache/git-${git_ver}
+then
+    echo "-----> Using Git ${git_ver}"
+else
+	mkdir -p $cache/git-${git_ver}
+	git clone -v https://github.com/git/git $cache/git-${git_ver}
+fi
+cd $cache/git-${git_ver}
+make NO_TCLTK=YesPlease NO_PERL=YesPlease NO_GETTEXT=YesPlease NO_SVN_TESTS=YesPlease NO_MSGFMT=YesPlease NO_MSGFMT_EXTENDED_OPTIONS=YesPlease prefix=$HOME install
+cd -
+PATH=$HOME/bin:$PATH
+hash -r
 
 if test -d $cache/go-$ver/go
 then
