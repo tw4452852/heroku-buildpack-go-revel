@@ -81,11 +81,11 @@ unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go version ./..."
 go version
 
-echo "-----> Running: go get -x ./..."
+echo "-----> Running: go get -x -v ./..."
 cd $p
-go get -x ./... | sed -u 's/^/       /'
+go get -x -v ./... | sed -u 's/^/       /'
 
-echo "-----> Running: go get -u -x revel"
+echo "-----> Running: go get -v -u -x revel"
 mkdir -p $build/bin
-go get -u -x github.com/revel/revel
-go install -x github.com/revel/cmd/revel
+go get -u -x -v github.com/revel/revel
+go install -x -v github.com/revel/cmd/revel
