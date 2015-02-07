@@ -64,11 +64,11 @@ then
     echo " done"
 
     echo -n "       Installing Mercurial..."
-    pip install --use-mirrors mercurial > /dev/null 2>&1
+    pip install -v --use-mirrors mercurial > /dev/null 2>&1
     echo " done"
 
     echo -n "       Installing Git"
-    pip install git > /dev/null 2>&1
+    pip install -v git > /dev/null 2>&1
     echo " done"
 fi
 
