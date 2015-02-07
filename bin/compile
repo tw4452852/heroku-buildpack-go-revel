@@ -18,6 +18,11 @@ mkdir -p $cache/pip
 python=python2.7
 PATH=$venv/bin:$PATH
 
+# git 2.3
+PATH=/app/bin:$PATH
+hash -r
+which -a git
+
 virtualenv() {
     python "$buildpack/vendor/virtualenv-1.11.6/virtualenv.py" "$@"
 }
