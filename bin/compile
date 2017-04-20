@@ -37,7 +37,7 @@ else
 	echo " done"
 fi
 cd ${cache_git}
-make NO_TCLTK=YesPlease NO_PERL=YesPlease NO_GETTEXT=YesPlease NO_SVN_TESTS=YesPlease NO_MSGFMT=YesPlease NO_MSGFMT_EXTENDED_OPTIONS=YesPlease prefix=$HOME install
+make -j8 NO_TCLTK=YesPlease NO_PERL=YesPlease NO_GETTEXT=YesPlease NO_SVN_TESTS=YesPlease NO_MSGFMT=YesPlease NO_MSGFMT_EXTENDED_OPTIONS=YesPlease prefix=$HOME install
 cd -
 PATH=$HOME/bin:$PATH
 hash -r
