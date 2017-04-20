@@ -1,16 +1,15 @@
 #!/bin/bash
-# usage: bin/compile <build-dir> <cache-dir>
+# usage: bin/compile <build-dir> <cache-dir> <env-dir>
 
 set -eo pipefail
 
 mkdir -p "$1" "$2"
 build=$(cd "$1/" && pwd)
 cache=$(cd "$2/" && pwd)
-ver=1.4
+ver=1.8.1
 file=go$ver.linux-amd64.tar.gz
 url=https://storage.googleapis.com/golang/$file
 buildpack=$(dirname $(dirname $0))
-
 
 # Python
 venv=$cache/venv
@@ -27,29 +26,17 @@ virtualenv() {
     python "$buildpack/vendor/virtualenv-1.11.6/virtualenv.py" "$@"
 }
 
-if ! test -f $build/.godir
-then
-    echo >&2 " !     A .godir is required."
-    echo >&2 " !     See https://gist.github.com/299535bbf56bf3016cba for instructions."
-    exit 1
-fi
-
-if test -e $build/bin && ! test -d $build/bin
-then
-    echo >&2 " !     File bin exists and is not a directory."
-    exit 1
-fi
-
-if test -d $cache/git-${git_ver}
+cache_git=$cache/git-${git_ver}
+if test -d ${cache_git}
 then
     echo "-----> Using Git ${git_ver}"
 else
     echo -n "-----> Installing Git ${git_ver}..."
-	mkdir -p $cache/git-${git_ver}
-	git clone -v https://github.com/git/git $cache/git-${git_ver}
+	mkdir -p ${cache_git}
+	git clone -v https://github.com/git/git ${cache_git}
 	echo " done"
 fi
-cd $cache/git-${git_ver}
+cd ${cache_git}
 make NO_TCLTK=YesPlease NO_PERL=YesPlease NO_GETTEXT=YesPlease NO_SVN_TESTS=YesPlease NO_MSGFMT=YesPlease NO_MSGFMT_EXTENDED_OPTIONS=YesPlease prefix=$HOME install
 cd -
 PATH=$HOME/bin:$PATH
@@ -68,13 +55,7 @@ else
     rm -f $file
     echo " done"
 fi
-
 cp -R $cache/go-$ver/go $build/.goroot
-
-GOROOT=$build/.goroot export GOROOT
-GOPATH=$build/.go export GOPATH
-PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
 
 if ! (which hg > /dev/null && which bzr > /dev/null)
 then
@@ -92,10 +73,14 @@ then
     echo " done"
 fi
 
-name=$(cat $build/.godir)
-p=$GOPATH/src/$name
-mkdir -p $p
-cp -R $build/* $p
+
+GOROOT=$build/.goroot export GOROOT
+GOPATH=$build/.go export GOPATH
+PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+mkdir -p $build/.profile.d
+echo "export GOROOT=${GOROOT}" > $build/.profile.d/go.sh
+echo "export GOPATH=${GOPATH}" >> $build/.profile.d/go.sh
+echo "export PATH=${PATH}" >> $build/.profile.d/go.sh
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go version"
@@ -103,10 +88,16 @@ go version
 echo "-----> Running: git --version"
 git --version
 
-echo "-----> Running: go get -x -v ./..."
-cd $p
-go get -x -v ./... | sed -u 's/^/       /'
+echo "-----> Running: go get -u github.com/mholt/caddy/caddy"
+go get -u github.com/mholt/caddy/caddy | sed -u 's/^/       /'
 
-echo "-----> Running: go get -v -u -x revel"
-mkdir -p $build/bin
-go get -u -x -v github.com/revel/cmd/revel
+echo "-----> Running: go get -d github.com/tw4452852/caddy-totorow"
+go get -d github.com/tw4452852/caddy-totorow
+
+patch_file=$GOPATH/src/github.com/tw4452852/caddy-totorow/0001-add-totorow-plugin.patch
+echo -n "-----> Patching caddy..."
+git -C $GOPATH/src/github.com/mholt/caddy apply ${patch_file} || exit 1
+echo " done"
+
+echo "-----> Running: go get github.com/mholt/caddy/caddy"
+go get github.com/mholt/caddy/caddy | sed -u 's/^/       /'

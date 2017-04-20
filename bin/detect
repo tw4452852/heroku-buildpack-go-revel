@@ -2,7 +2,7 @@
 # bin/detect <build-dir>
 set -e
 
-if (test -e $1/conf/app.conf && test -e $1/conf/routes)
-then echo Revel
+if (test -e $1/Caddyfile)
+then echo Totorow
 else echo no; exit 1
 fi
