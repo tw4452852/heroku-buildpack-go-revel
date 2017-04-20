@@ -78,9 +78,9 @@ GOROOT=$build/.goroot export GOROOT
 GOPATH=$build/.go export GOPATH
 PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 mkdir -p $build/.profile.d
-echo "export GOROOT=${GOROOT}" > $build/.profile.d/go.sh
-echo "export GOPATH=${GOPATH}" >> $build/.profile.d/go.sh
-echo "export PATH=${PATH}" >> $build/.profile.d/go.sh
+echo 'export GOROOT=${HOME}/.goroot' > $build/.profile.d/go.sh
+echo 'export GOPATH=${HOME}/.go' >> $build/.profile.d/go.sh
+echo 'export PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin' >> $build/.profile.d/go.sh
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go version"
